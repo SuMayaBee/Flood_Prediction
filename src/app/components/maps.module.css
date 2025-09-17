@@ -1,0 +1,256 @@
+/* maps.module.css */
+
+/* components/YourComponent.module.css */
+
+.toggleButton {
+  /* Positioning */
+  position: fixed; /* Keeps the button visible on scroll */
+  top: 20px; /* Adjust as needed */
+  left: 50%;
+  transform: translateX(-50%);
+
+  /* Appearance */
+  padding: 12px 24px;
+  background-color: #1118d0;
+  border: none; /* Removed border for a cleaner look */
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+  
+  /* Accessibility */
+  outline: none;
+}
+
+.toggleButton:hover,
+.toggleButton:focus {
+  background-color: #0a14b2; /* Darker shade on hover/focus */
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  transform: translateX(-50%) scale(1.05); /* Slight scale on hover for feedback */
+}
+
+.toggleButton:active {
+  background-color: #08189a; /* Even darker on active state */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transform: translateX(-50%) scale(1); /* Reset scale on click */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .toggleButton {
+    padding: 14px 28px;
+    font-size: 18px;
+    top: 15px; /* Adjust top position for smaller screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .toggleButton {
+    padding: 10px 20px;
+    font-size: 16px;
+    top: 10px; /* Further adjust for very small screens */
+  }
+}
+
+  
+  .errorMessage {
+    position: absolute;
+    top: 50px;
+    left: 10px;
+    z-index: 1000;
+    background-color: rgba(255, 0, 0, 0.8);
+    color: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    font-size: 14px;
+  }
+  
+/* components/Maps.module.css */
+
+.mapsContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+}
+
+.searchBox {
+  display: flex;
+  width: 100%;
+  max-width: 600px;
+  margin-bottom: 30px;
+}
+
+.searchInput {
+  flex: 1;
+  padding: 12px 16px;
+  border: 2px solid #1118d0;
+  border-right: none;
+  border-radius: 8px 0 0 8px;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.searchInput:focus {
+  border-color: #0a14b2;
+}
+
+.searchButton {
+  padding: 12px 20px;
+  background-color: #1118d0;
+  border: 2px solid #1118d0;
+  border-left: none;
+  border-radius: 0 8px 8px 0;
+  color: #ffffff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.searchButton:hover,
+.searchButton:focus {
+  background-color: #0a14b2;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.buttonsContainer {
+  display: flex;
+  gap: 20px;
+  width: 100%;
+  max-width: 800px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.buttonGroup {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.button {
+  width: 220px;
+  padding: 12px 20px;
+  background-color: rgba(17, 24, 208, 0.9); /* #1118d0 with 90% opacity */
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+}
+
+.button:hover,
+.button:focus {
+  background-color: rgba(10, 20, 178, 0.9); /* #0a14b2 with 90% opacity */
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.activeButton {
+  background-color: rgba(8, 24, 154, 0.95); /* #08189a with 95% opacity */
+}
+
+.subButtons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.subButton {
+  width: 200px;
+  padding: 10px 16px;
+  background-color: rgba(0, 123, 255, 0.8); /* #007bff with 80% opacity */
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.subButton:hover,
+.subButton:focus {
+  background-color: rgba(0, 86, 179, 0.8); /* #0056b3 with 80% opacity */
+  transform: translateY(-2px);
+}
+
+.selectedSubButton {
+  background-color: rgba(0, 86, 179, 0.9); /* #0056b3 with 90% opacity */
+}
+
+/* Responsive Design */
+
+@media (max-width: 1024px) {
+  .buttonsContainer {
+    flex-direction: row;
+    justify-content: space-around;
+  }
+}
+
+@media (max-width: 768px) {
+  .button {
+    width: 180px;
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+
+  .subButton {
+    width: 180px;
+    padding: 8px 14px;
+    font-size: 12px;
+  }
+
+  .searchBox {
+    max-width: 100%;
+  }
+
+  .buttonsContainer {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .button {
+    width: 160px;
+    padding: 8px 14px;
+    font-size: 14px;
+  }
+
+  .subButton {
+    width: 160px;
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  .searchBox {
+    flex-direction: column;
+  }
+
+  .searchInput,
+  .searchButton {
+    width: 100%;
+    border-radius: 8px;
+    border: 2px solid #1118d0;
+  }
+
+  .searchButton {
+    margin-top: 10px;
+    border-left: 2px solid #1118d0;
+  }
+}
+
+
+
+
+
+
+
+
