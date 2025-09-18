@@ -7,6 +7,7 @@ import {
   Marker,
   Popup,
   useMap,
+  GeoJSON,
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet-defaulticon-compatibility";
@@ -18,7 +19,7 @@ import { Chart, LineElement, CategoryScale, LinearScale, PointElement, Legend, T
 // Register the chart components with Chart.js
 Chart.register(LineElement, CategoryScale, LinearScale, PointElement, Legend, Title);
 
-const { BaseLayer } = LayersControl;
+const { BaseLayer, Overlay } = LayersControl;
 
 export function ChangeView({ coords }) {
   const map = useMap();
@@ -35,6 +36,8 @@ const customIcon = new L.Icon({
 
 export default function MapCoordinates() {
   const [stations, setStations] = useState([]);
+  const [borders, setBorders] = useState(null);
+  const [districts, setDistricts] = useState(null);
   const [geoData, setGeoData] = useState({
     lat: 23.685,
     lng: 90.3563,
@@ -78,13 +81,132 @@ export default function MapCoordinates() {
     fetchData();
   }, []); // Empty dependency array means this will run once when the component mounts
 
+  // Fetch borders data
+  useEffect(() => {
+    const fetchBorders = async () => {
+      const cacheKey = "bordersData";
+      const cachedData = localStorage.getItem(cacheKey);
+  
+      // Function to validate cache timestamp
+      const isCacheValid = (timestamp) => {
+        const CACHE_DURATION = 60 * 60 * 1000; // 1 hour in milliseconds
+        return Date.now() - timestamp < CACHE_DURATION;
+      };
+  
+      // Check if cached data exists and is valid
+      if (cachedData) {
+        const parsedData = JSON.parse(cachedData);
+        if (isCacheValid(parsedData.timestamp)) {
+          setBorders(parsedData.data);
+          return; // Exit early if valid cached data is found
+        }
+      }
+  
+      try {
+        // Fetch data from the local JSON file in public/assets/geojson/
+        const response = await fetch("/assets/geojson/BD_Bndry"); // Relative path to public directory
+  
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+  
+        const data = await response.json();
+        setBorders(data);
+  
+        // Cache the fetched data with the current timestamp
+        localStorage.setItem(
+          cacheKey,
+          JSON.stringify({ data, timestamp: Date.now() })
+        );
+      } catch (error) {
+        console.error("Error loading borders GeoJSON data:", error);
+  
+        if (cachedData) {
+          const parsedData = JSON.parse(cachedData);
+          setBorders(parsedData.data);
+        } else {
+          // Optional: Handle cases where no data is available
+          console.warn("No cached data available for borders GeoJSON.");
+          setBorders([]); // Set to an empty array or a default value as needed
+        }
+      }
+    };
+    fetchBorders();
+  }, []);
+
+  // Fetch districts data
+  useEffect(() => {
+    const fetchDistricts = async () => {
+      const cacheKey = "districtsData";
+      const cachedData = localStorage.getItem(cacheKey);
+  
+      // Function to validate cache timestamp
+      const isCacheValid = (timestamp) => {
+        const CACHE_DURATION = 60 * 60 * 1000; // 1 hour in milliseconds
+        return Date.now() - timestamp < CACHE_DURATION;
+      };
+  
+      // Check if cached data exists and is valid
+      if (cachedData) {
+        const parsedData = JSON.parse(cachedData);
+        if (isCacheValid(parsedData.timestamp)) {
+          setDistricts(parsedData.data);
+          return;
+        }
+      }
+  
+      try {
+        const response = await fetch("/assets/geojson/bd_adm2.json");
+  
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+  
+        const data = await response.json();
+        setDistricts(data);
+  
+        localStorage.setItem(
+          cacheKey,
+          JSON.stringify({ data, timestamp: Date.now() })
+        );
+      } catch (error) {
+        console.error("Error loading districts GeoJSON data:", error);
+  
+        if (cachedData) {
+          const parsedData = JSON.parse(cachedData);
+          setDistricts(parsedData.data);
+        } else {
+          console.warn("No cached data available for districts GeoJSON.");
+          setDistricts([]);
+        }
+      }
+    };
+    fetchDistricts();
+  }, []);
+
+  // Styling for borders
+  const borderStyle = {
+    color: "#FF0000", // Red color for borders
+    weight: 2,
+    opacity: 1,
+    fillOpacity: 0.1,
+  };
+
+  // Styling for districts
+  const districtStyle = {
+    color: "#00FF00", // Green color for districts
+    weight: 1.5,
+    opacity: 0.8,
+    fillOpacity: 0.2,
+  };
+
   // Prepare chart data for visualization in the popup
   const prepareChartData = (station) => {
     if (!station || !station.forecast) return null;
 
     const forecastDates = Object.keys(station.forecast).map(dateStr => {
       const date = new Date(dateStr);
-      date.setDate(date.getDate() + 11); // Add 11 days
+      date.setDate(date.getDate() + 12); // Add 11 days
       return date.toISOString().split('T')[0]; // Format as YYYY-MM-DD
     });
     const forecastLevels = Object.values(station.forecast).map((level) => parseFloat(level));
@@ -154,6 +276,20 @@ export default function MapCoordinates() {
             url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
           />
         </BaseLayer>
+
+        {/* Render borders if data is available */}
+        {borders && (
+          <Overlay checked name="Borders">
+            <GeoJSON data={borders} style={borderStyle} />
+          </Overlay>
+        )}
+
+        {/* Render districts if data is available */}
+        {districts && (
+          <Overlay checked name="Districts">
+            <GeoJSON data={districts} style={districtStyle} />
+          </Overlay>
+        )}
       </LayersControl>
 
       {/* Loop through the stations and create a Marker for each */}
