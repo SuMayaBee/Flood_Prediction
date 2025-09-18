@@ -104,4 +104,16 @@ An Output layer with 15 neurons, one for each day of the 15-day forecast.
 
 Training: You will train the model to minimize the difference between its 15-day prediction and the actual 15 days of water levels from your historical data. The Mean Squared Error (MSE) is a common loss function for this type of regression problem.
 
+## Making a Prediction
+To predict the next 15 days from today, you will:
+
+- Grab the last 30 days of data for a specific station.
+
+- Preprocess and structure it exactly as you did for the training data.
+
+- Feed it into the trained model for that station.
+
+- The model will output 15 values, which are your scaled predictions. You will then use your scaler to transform them back into the original water level units (meters).
+
+
 
