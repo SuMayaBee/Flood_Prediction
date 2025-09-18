@@ -30,15 +30,17 @@ Install dependencies
   npm install
 ```
 
-Start the server
+
+start the server
 
 ```bash
   npm run dev
 ```
 
 
+
 # Project Details
-### What is it?
+## What is it?
 FloodShield addresses the critical challenge of community mapping in flood-prone areas. By creating an innovative flood prediction and alert system, we harness NASA's open-source historical flood data to empower communities. Our platform visualizes real-time water levels across Bangladesh through an interactive map, highlighting recent, danger, and peak water levels from various stations. With the ability to predict floods up to 15 days in advance, FloodShield gives people the time they need to take action. The system also includes a chatbot for personalized flood predictions and an admin panel for researchers to upload data, promoting transparency and informed decision-making.
 
 ### Why this is relevant or important?
@@ -77,4 +79,5 @@ An admin panel allows researchers to upload and manage data, ensuring transparen
 ## AI Chatbot Interaction
 We integrated Artificial Intelligence into our project to enhance user interaction and data accessibility. Our AI-powered chatbot provides real-time communication with users, answering their questions about flood predictions and offering guidance on safety measures. This allows users to receive timely, personalized assistance, improving their understanding of the flood risks and empowering them to take proactive action.
 <img width="770" alt="ChatbotPlusMap" src="https://github.com/user-attachments/assets/1c49c96f-0267-4503-9392-c7e77d038150">
+
 
