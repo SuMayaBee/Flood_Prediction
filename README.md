@@ -81,3 +81,27 @@ We integrated Artificial Intelligence into our project to enhance user interacti
 <img width="770" alt="ChatbotPlusMap" src="https://github.com/user-attachments/assets/1c49c96f-0267-4503-9392-c7e77d038150">
 
 
+## Building and Training the LSTM Model
+Independent Models: The water flow dynamics of the Jamuna river are very different from the Surma river. Therefore, you should train one separate LSTM model for each of the 122 water stations. This allows each model to become a specialist for its specific location.
+
+- Data Scaling: Neural networks work best when input data is scaled, typically to a range between 0 and 1. You will use a MinMaxScaler from scikit-learn for this.
+
+- Structuring for LSTM: The LSTM layer in libraries like TensorFlow/Keras expects input in a specific 3D shape: (samples, timesteps, features).
+
+- samples: The number of data points (rows) in your dataset.
+
+- timesteps: The length of your input sequence (in our case, 30 days).
+
+- features: The number of features you are using for each day (e.g., Avg_Water_Level, Day_of_Year, lags, etc.).
+
+- Model Architecture: A simple but effective architecture would be:
+
+An LSTM layer with 50 or 100 units to learn the temporal patterns.
+
+A Dense layer (a standard fully connected layer) to consolidate the learned features.
+
+An Output layer with 15 neurons, one for each day of the 15-day forecast.
+
+Training: You will train the model to minimize the difference between its 15-day prediction and the actual 15 days of water levels from your historical data. The Mean Squared Error (MSE) is a common loss function for this type of regression problem.
+
+
